@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Lady Nestis Registry of Modest Necessities</title>
+<style>
+  :root{
+    --bg:#070707;
+    --panel:#11100d;
+    --panel2:#19150f;
+    --gold:#d4af37;
+    --gold2:#f1d77a;
+    --muted:#b7aa86;
+    --text:#f4efe3;
+    --line:rgba(212,175,55,.28);
+    --shadow:0 18px 50px rgba(0,0,0,.65);
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    font-family: Georgia, "Times New Roman", serif;
+    color:var(--text);
+    background:
+      radial-gradient(circle at 20% 0%, rgba(212,175,55,.08), transparent 32%),
+      radial-gradient(circle at 80% 12%, rgba(212,175,55,.05), transparent 30%),
+      linear-gradient(180deg,#050505,#0a0907 55%,#050505);
+    min-height:100vh;
+  }
+  .wrap{width:min(1180px,92%);margin:auto}
+  header{
+    text-align:center;
+    padding:72px 0 42px;
+  }
+  .crest{
+    width:76px;height:76px;margin:0 auto 18px;border:1px solid var(--gold);
+    border-radius:50%;display:grid;place-items:center;
+    box-shadow:0 0 0 6px rgba(212,175,55,.05), inset 0 0 24px rgba(212,175,55,.08);
+    font-size:34px;color:var(--gold2);
+  }
+  h1{
+    margin:0;
+    font-size:clamp(34px,6vw,70px);
+    letter-spacing:.04em;
+    color:var(--gold2);
+    text-shadow:0 3px 0 #6b5317, 0 12px 35px rgba(212,175,55,.15);
+  }
+  .subtitle{
+    margin:14px auto 0;
+    max-width:760px;
+    color:var(--muted);
+    font-style:italic;
+    font-size:18px;
+    line-height:1.5;
+  }
+  .rule{
+    width:180px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    margin:26px auto 0;
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+    padding:18px 0 70px;
+  }
+
+  .card{
+    position:relative;
+    background:
+      linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,0)),
+      linear-gradient(180deg,var(--panel2),var(--panel));
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:28px 24px 24px;
+    min-height:360px;
+    box-shadow:
+      var(--shadow),
+      inset 0 1px 0 rgba(255,255,255,.05),
+      inset 0 -12px 24px rgba(0,0,0,.2);
+    transform-style:preserve-3d;
+    transition:.25s ease;
+    overflow:hidden;
+  }
+  .card:hover{
+    transform:translateY(-7px) rotateX(1.5deg);
+    border-color:rgba(241,215,122,.55);
+    box-shadow:0 24px 70px rgba(0,0,0,.72), 0 0 30px rgba(212,175,55,.06);
+  }
+  .card:before{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(120deg,transparent 10%,rgba(255,255,255,.03) 42%,transparent 70%);
+    pointer-events:none;
+  }
+  .number{
+    position:absolute;top:18px;right:20px;
+    font-size:13px;letter-spacing:.16em;color:rgba(212,175,55,.55);
+  }
+  .icon{
+    font-size:46px;
+    margin-bottom:16px;
+    filter:drop-shadow(0 8px 14px rgba(0,0,0,.4));
+  }
+  .card h2{
+    margin:0 0 10px;
+    color:#f3df98;
+    font-size:26px;
+    line-height:1.1;
+  }
+  .desc{
+    color:#d7cfbc;
+    line-height:1.55;
+    min-height:96px;
+  }
+  .meta{
+    margin:18px 0 20px;
+    display:flex;justify-content:space-between;gap:12px;align-items:center;
+    padding:12px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .price{
+    color:var(--gold2);font-weight:bold;font-size:18px;
+  }
+  .tag{
+    font-size:12px;color:#c9bd9e;text-transform:uppercase;letter-spacing:.1em;
+  }
+  .buttons{display:flex;gap:10px;flex-wrap:wrap}
+  button{
+    appearance:none;border-radius:999px;padding:11px 15px;
+    font-family:inherit;cursor:pointer;transition:.2s ease;
+    border:1px solid var(--gold);
+  }
+  .primary{
+    background:linear-gradient(180deg,#e0c45a,#9c761f);
+    color:#130f05;font-weight:bold;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 6px 16px rgba(212,175,55,.14);
+  }
+  .primary:hover{transform:translateY(-2px);filter:brightness(1.06)}
+  .ghost{
+    background:transparent;color:#e8d99a;
+  }
+  .ghost:hover{background:rgba(212,175,55,.08)}
+  footer{
+    border-top:1px solid var(--line);
+    text-align:center;
+    color:#7f755f;
+    padding:28px 0 40px;
+    font-size:13px;
+  }
+
+  .toast{
+    position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);
+    background:#111;border:1px solid var(--gold);color:#f3df98;
+    padding:14px 18px;border-radius:12px;box-shadow:var(--shadow);
+    opacity:0;pointer-events:none;transition:.25s ease;
+    max-width:min(90vw,560px);text-align:center;z-index:999;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:620px){.grid{grid-template-columns:1fr} header{padding-top:48px}}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="crest">N</div>
+      <h1>The Lady Nestis Registry</h1>
+      <div class="subtitle">A carefully curated collection of entirely reasonable necessities, modest comforts, and absolutely essential acquisitions.</div>
+      <div class="rule"></div>
+    </header>
+
+    <main class="grid">
+
+      <article class="card">
+        <div class="number">ITEM 01</div>
+        <div class="icon">♊</div>
+        <h2>A Pair of 6'4" Male Twins</h2>
+        <div class="desc">Identical preferred. Excellent hair required. House-trained is a strong advantage. Must understand that sharing is caring.</div>
+        <div class="meta"><span class="price">Priceless</span><span class="tag">Quantity: 2</span></div>
+        <div class="buttons">
+          <button class="primary" onclick="buy('The twins are currently backordered due to unusually high demand.')">Buy It For Me</button>
+          <button class="ghost" onclick="wish('6\'4&quot; Male Twins')">Add to Wishlist</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="number">ITEM 02</div>
+        <div class="icon">💰</div>
+        <h2>One Million Dollars</h2>
+        <div class="desc">Cash is acceptable. Wire transfer is acceptable. Gold bullion will also be considered. No inspirational quotes in lieu of payment.</div>
+        <div class="meta"><span class="price">$1,000,000</span><span class="tag">Priority: Urgent</span></div>
+        <div class="buttons">
+          <button class="primary" onclick="buy('Excellent choice. Please contact your bank and try not to ask too many questions.')">Buy It For Me</button>
+          <button class="ghost" onclick="wish('One Million Dollars')">Add to Wishlist</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="number">ITEM 03</div>
+        <div class="icon">🏰</div>
+        <h2>A Tastefully Haunted Castle</h2>
+        <div class="desc">European stonework, dramatic staircases, secret passages, and functional plumbing. Ghosts may remain if they respect boundaries.</div>
+        <div class="meta"><span class="price">€14,750,000</span><span class="tag">Haunting Included</span></div>
+        <div class="buttons">
+          <button class="primary" onclick="buy('Your castle purchase has been referred to the Department of Excessive Gothic Spending.')">Buy It For Me</button>
+          <button class="ghost" onclick="wish('Haunted Castle')">Add to Wishlist</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="number">ITEM 04</div>
+        <div class="icon">🐉</div>
+        <h2>One Black Dragon</h2>
+        <div class="desc">Large, intimidating, loyal, and preferably housebroken. Temperamental is acceptable. Previous difficult-pet experience available.</div>
+        <div class="meta"><span class="price">3 Kingdoms</span><span class="tag">Shipping: Complicated</span></div>
+        <div class="buttons">
+          <button class="primary" onclick="buy('Delivery failed. Courier reports the package ate the truck.')">Buy It For Me</button>
+          <button class="ghost" onclick="wish('Black Dragon')">Add to Wishlist</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="number">ITEM 05</div>
+        <div class="icon">🏝️</div>
+        <h2>A Private Island</h2>
+        <div class="desc">Warm climate, no neighbors, good internet, dramatic cliffs, and enough land to disappear from society without losing Wi‑Fi.</div>
+        <div class="meta"><span class="price">$38,000,000</span><span class="tag">Neighbors: 0</span></div>
+        <div class="buttons">
+          <button class="primary" onclick="buy('Your island is ready. Unfortunately, the yacht is sold separately.')">Buy It For Me</button>
+          <button class="ghost" onclick="wish('Private Island')">Add to Wishlist</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="number">ITEM 06</div>
+        <div class="icon">🧠</div>
+        <h2>One Functioning Attention Span</h2>
+        <div class="desc">New or gently used. Must remain operational for more than eleven minutes and should not wander off because something shiny appeared.</div>
+        <div class="meta"><span class="price">Currently Unavailable</span><span class="tag">Rare Item</span></div>
+        <div class="buttons">
+          <button class="primary" onclick="buy('This item was in your cart, but you got distracted and opened another tab.')">Buy It For Me</button>
+          <button class="ghost" onclick="wish('Functioning Attention Span')">Add to Wishlist</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="number">ITEM 07</div>
+        <div class="icon">🧛</div>
+        <h2>Immortality</h2>
+        <div class="desc">Vampire package preferred. Eternal youth included. No glitter, no sparkling in sunlight, and absolutely no tedious immortality subscription fees.</div>
+        <div class="meta"><span class="price">Your Soul*</span><span class="tag">*Terms Apply</span></div>
+        <div class="buttons">
+          <button class="primary" onclick="buy('A representative will visit shortly after sunset.')">Buy It For Me</button>
+          <button class="ghost" onclick="wish('Immortality')">Add to Wishlist</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="number">ITEM 08</div>
+        <div class="icon">🍷</div>
+        <h2>A Personal Chef</h2>
+        <div class="desc">Must cook beautifully, clean the kitchen afterward, understand late-night snacks, and never ask what happened to the last bottle of wine.</div>
+        <div class="meta"><span class="price">$185,000 / yr</span><span class="tag">Dishes Included</span></div>
+        <div class="buttons">
+          <button class="primary" onclick="buy('Chef confirmed. They would like to know whether breakfast before noon is negotiable.')">Buy It For Me</button>
+          <button class="ghost" onclick="wish('Personal Chef')">Add to Wishlist</button>
+        </div>
+      </article>
+
+      <article class="card">
+        <div class="number">ITEM 09</div>
+        <div class="icon">👑</div>
+        <h2>World Domination</h2>
+        <div class="desc">Tasteful domination only. Excellent infrastructure, competent administrators, beautiful architecture, and weekends entirely off.</div>
+        <div class="meta"><span class="price">Negotiable</span><span class="tag">Phase One</span></div>
+        <div class="buttons">
+          <button class="primary" onclick="buy('Your application has been forwarded to the appropriate shadow council.')">Buy It For Me</button>
+          <button class="ghost" onclick="wish('World Domination')">Add to Wishlist</button>
+        </div>
+      </article>
+
+    </main>
+  </div>
+
+  <footer>
+    For entertainment purposes only. No dragons, castles, twins, kingdoms, souls, or sovereign nations are actually being sold here.
+  </footer>
+
+  <div id="toast" class="toast"></div>
+
+<script>
+let wishlistCount = 0;
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(window.toastTimer);
+  window.toastTimer = setTimeout(()=>t.classList.remove('show'), 2800);
+}
+function wish(item){
+  wishlistCount++;
+  toast('Added: ' + item + '  •  Your standards remain admirably unreasonable.');
+}
+function buy(msg){
+  toast(msg);
+}
+</script>
+</body>
+</html>
