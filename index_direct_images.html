@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Lady Nestis Registry of Modest Necessities</title>
+<style>
+:root{--gold:#d4af37;--gold2:#f3dc83;--line:#d4af3745;--text:#f5f0e5;--muted:#b9ad90}
+*{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 20% 0,#d4af3715,transparent 28%),linear-gradient(#050505,#0a0907 60%,#050505);color:var(--text);font-family:Georgia,"Times New Roman",serif}
+.wrap{width:min(1240px,93%);margin:auto} .top{position:sticky;top:0;z-index:20;background:#050505e8;backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.topin{height:62px;display:flex;align-items:center;justify-content:space-between} .brand{color:var(--gold2);letter-spacing:.08em;font-weight:bold}
+.cartbtn,.primary{border:1px solid var(--gold);background:linear-gradient(#e1c85f,#99711d);color:#140f04;font-weight:bold} button{border-radius:999px;padding:11px 14px;font-family:inherit;cursor:pointer}
+header{text-align:center;padding:62px 0 38px} .crest{width:76px;height:76px;border:1px solid var(--gold);border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;color:var(--gold2);font-size:34px;box-shadow:0 0 0 6px #d4af370d,inset 0 0 24px #d4af3714}
+h1{margin:0;color:var(--gold2);font-size:clamp(36px,6vw,68px);text-shadow:0 3px 0 #6a5216} .sub{max-width:820px;margin:14px auto;color:var(--muted);font-style:italic;font-size:18px;line-height:1.5}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;padding:12px 0 70px} .card{background:linear-gradient(145deg,#ffffff08,transparent),linear-gradient(#18140d,#100f0c);border:1px solid var(--line);border-radius:20px;overflow:hidden;box-shadow:0 18px 50px #000a;transition:.25s}
+.card:hover{transform:translateY(-7px);border-color:#f2db8370} .photo{height:215px;position:relative;border-bottom:1px solid var(--line);overflow:hidden}.photo img{width:100%;height:100%;object-fit:cover;display:block} .photo:after{content:"";position:absolute;inset:0;background:linear-gradient(transparent 55%,#050505d2)}
+.badge{position:absolute;left:15px;top:14px;z-index:2;border:1px solid #d4af376f;border-radius:999px;background:#050505cf;color:var(--gold2);padding:7px 10px;font-size:11px;letter-spacing:.08em}
+.body{padding:22px} .item{font-size:11px;letter-spacing:.18em;color:#d4af3788} h2{margin:8px 0;color:#f3df98;font-size:26px} .desc{color:#d8d0bd;line-height:1.5;min-height:90px}
+.rating{margin-top:14px;color:var(--gold2)} .rating small{color:#938a77;margin-left:5px} .meta{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:12px 0;margin:15px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)} .price{color:var(--gold2);font-weight:bold}
+.tag{font-size:11px;color:#bfb395;text-transform:uppercase;letter-spacing:.08em} .review{background:#ffffff05;border-left:2px solid var(--gold);padding:13px;margin-bottom:17px;color:#cfc5ac;font-size:13px;font-style:italic;line-height:1.45} .review span{display:block;margin-top:5px;color:#847b69;font-style:normal;font-size:11px}
+.buttons{display:flex;gap:9px;flex-wrap:wrap} .ghost{border:1px solid var(--gold);background:transparent;color:#e7d796} footer{text-align:center;border-top:1px solid var(--line);padding:30px;color:#776e5c;font-size:12px}
+.overlay{position:fixed;inset:0;background:#0009;opacity:0;pointer-events:none;transition:.25s;z-index:50} .overlay.open{opacity:1;pointer-events:auto}
+.drawer{position:fixed;right:0;top:0;width:min(430px,92vw);height:100%;background:#0c0b09;border-left:1px solid var(--line);z-index:60;transform:translateX(100%);transition:.28s;display:flex;flex-direction:column} .drawer.open{transform:none}
+.dh{padding:22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center} .dh h3{margin:0;color:var(--gold2);font-size:24px} .close{background:none;border:0;color:var(--gold2);font-size:24px}
+.cartlist{padding:16px 20px;overflow:auto;flex:1} .ci{display:grid;grid-template-columns:1fr auto;gap:8px;padding:13px 0;border-bottom:1px solid var(--line)} .ci b{color:#ead78f} .ci small{color:#8d846f} .remove{border:0;background:none;color:#b88c64;padding:0}
+.cf{padding:20px;border-top:1px solid var(--line)} .total{display:flex;justify-content:space-between;margin-bottom:14px;color:#d9c98f} .total strong{color:var(--gold2)} .checkout{width:100%}
+.empty{text-align:center;color:#8d846f;margin:45px 0} .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);opacity:0;background:#111;border:1px solid var(--gold);color:#f2df98;padding:14px 18px;border-radius:12px;z-index:100;transition:.25s;max-width:min(90vw,600px);text-align:center} .toast.show{opacity:1;transform:translateX(-50%)}
+@media(max-width:950px){.grid{grid-template-columns:repeat(2,1fr)}} @media(max-width:640px){.grid{grid-template-columns:1fr}.brand{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="top"><div class="wrap topin"><div class="brand">THE LADY NESTIS REGISTRY</div><button class="cartbtn" onclick="openCart()">🛒 Shopping Cart · <span id="count">0</span></button></div></div>
+<div class="wrap"><header><div class="crest">N</div><h1>The Lady Nestis Registry</h1><div class="sub">A carefully curated collection of entirely reasonable necessities, modest comforts, and absolutely essential acquisitions.</div></header>
+<main class="grid">
+<article class="card">
+  <div class="photo"><img src="./twins.jpg" alt="" loading="lazy"><span class="badge">HIGHLY COVETED</span></div>
+  <div class="body">
+    <div class="item">ITEM 01</div>
+    <h2>A Pair of 6'4" Male Twins</h2>
+    <div class="desc">Identical preferred. Excellent hair required. House-trained is a strong advantage. Must understand that sharing is caring.</div>
+    <div class="rating">★★★★★ <small>4,813 reviews</small></div>
+    <div class="meta"><span class="price">Priceless</span><span class="tag">Quantity: 2</span></div>
+    <div class="review">“Arrived well dressed and on time. One keeps stealing my coffee, but otherwise excellent craftsmanship.”<span>— DuchessOfBadDecisions</span></div>
+    <div class="buttons">
+      <button class="primary" onclick="addCart(0,true)">Buy It For Me</button>
+      <button class="ghost" onclick="addCart(0,false)">Add to Wishlist</button>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <div class="photo"><img src="./million.jpg" alt="" loading="lazy"><span class="badge">BEST SELLER</span></div>
+  <div class="body">
+    <div class="item">ITEM 02</div>
+    <h2>One Million Dollars</h2>
+    <div class="desc">Cash is acceptable. Wire transfer is acceptable. Gold bullion will also be considered. No inspirational quotes in lieu of payment.</div>
+    <div class="rating">★★★★★ <small>9,991 reviews</small></div>
+    <div class="meta"><span class="price">$1,000,000</span><span class="tag">Priority: Urgent</span></div>
+    <div class="review">“Exactly as described. Would purchase again, preferably several times.”<span>— DefinitelyNotTheIRS</span></div>
+    <div class="buttons">
+      <button class="primary" onclick="addCart(1,true)">Buy It For Me</button>
+      <button class="ghost" onclick="addCart(1,false)">Add to Wishlist</button>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <div class="photo"><img src="./castle.jpg" alt="" loading="lazy"><span class="badge">ONLY 1 LEFT</span></div>
+  <div class="body">
+    <div class="item">ITEM 03</div>
+    <h2>A Tastefully Haunted Castle</h2>
+    <div class="desc">European stonework, dramatic staircases, secret passages, and functional plumbing. Ghosts may remain if they respect boundaries.</div>
+    <div class="rating">★★★★☆ <small>666 reviews</small></div>
+    <div class="meta"><span class="price">€14,750,000</span><span class="tag">Haunting Included</span></div>
+    <div class="review">“Beautiful property. Minor screaming from the east wing after midnight. Reduced one star for spectral plumbing.”<span>— LadyBathory88</span></div>
+    <div class="buttons">
+      <button class="primary" onclick="addCart(2,true)">Buy It For Me</button>
+      <button class="ghost" onclick="addCart(2,false)">Add to Wishlist</button>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <div class="photo"><img src="./dragon.jpg" alt="" loading="lazy"><span class="badge">LIMITED EDITION</span></div>
+  <div class="body">
+    <div class="item">ITEM 04</div>
+    <h2>One Black Dragon</h2>
+    <div class="desc">Large, intimidating, loyal, and preferably housebroken. Temperamental is acceptable. Previous difficult-pet experience available.</div>
+    <div class="rating">★★★★★ <small>312 reviews</small></div>
+    <div class="meta"><span class="price">3 Kingdoms</span><span class="tag">Shipping: Complicated</span></div>
+    <div class="review">“Majestic. Protective. Ate one courier and half a gazebo. Honestly, I expected worse.”<span>— TotallyResponsibleOwner</span></div>
+    <div class="buttons">
+      <button class="primary" onclick="addCart(3,true)">Buy It For Me</button>
+      <button class="ghost" onclick="addCart(3,false)">Add to Wishlist</button>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <div class="photo"><img src="./island.jpg" alt="" loading="lazy"><span class="badge">RECOMMENDED</span></div>
+  <div class="body">
+    <div class="item">ITEM 05</div>
+    <h2>A Private Island</h2>
+    <div class="desc">Warm climate, no neighbors, good internet, dramatic cliffs, and enough land to disappear from society without losing Wi‑Fi.</div>
+    <div class="rating">★★★★★ <small>1,204 reviews</small></div>
+    <div class="meta"><span class="price">$38,000,000</span><span class="tag">Neighbors: 0</span></div>
+    <div class="review">“No HOA. No neighbors. Fiber internet. I haven't spoken to another human being in six weeks. Perfection.”<span>— SociallyUnavailable</span></div>
+    <div class="buttons">
+      <button class="primary" onclick="addCart(4,true)">Buy It For Me</button>
+      <button class="ghost" onclick="addCart(4,false)">Add to Wishlist</button>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <div class="photo"><img src="./attention.jpg" alt="" loading="lazy"><span class="badge">BACKORDERED</span></div>
+  <div class="body">
+    <div class="item">ITEM 06</div>
+    <h2>One Functioning Attention Span</h2>
+    <div class="desc">New or gently used. Must remain operational for more than eleven minutes and should not wander off because something shiny appeared.</div>
+    <div class="rating">★★☆☆☆ <small>18,047 reviews</small></div>
+    <div class="meta"><span class="price">Currently Unavailable</span><span class="tag">Rare Item</span></div>
+    <div class="review">“I was going to write a detailed review but then I saw a video about medieval bread ovens.”<span>— ReviewIncomplete</span></div>
+    <div class="buttons">
+      <button class="primary" onclick="addCart(5,true)">Buy It For Me</button>
+      <button class="ghost" onclick="addCart(5,false)">Add to Wishlist</button>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <div class="photo"><img src="./immortality.jpg" alt="" loading="lazy"><span class="badge">ONE-TIME OFFER</span></div>
+  <div class="body">
+    <div class="item">ITEM 07</div>
+    <h2>Immortality</h2>
+    <div class="desc">Vampire package preferred. Eternal youth included. No glitter, no sparkling in sunlight, and absolutely no tedious immortality subscription fees.</div>
+    <div class="rating">★★★★☆ <small>2,000 years of reviews</small></div>
+    <div class="meta"><span class="price">Your Soul*</span><span class="tag">*Terms Apply</span></div>
+    <div class="review">“Product works. Customer service has been unreachable since 1473.”<span>— Vlad_OriginalCustomer</span></div>
+    <div class="buttons">
+      <button class="primary" onclick="addCart(6,true)">Buy It For Me</button>
+      <button class="ghost" onclick="addCart(6,false)">Add to Wishlist</button>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <div class="photo"><img src="./chef.jpg" alt="" loading="lazy"><span class="badge">WHITE-GLOVE SERVICE</span></div>
+  <div class="body">
+    <div class="item">ITEM 08</div>
+    <h2>A Personal Chef</h2>
+    <div class="desc">Must cook beautifully, clean the kitchen afterward, understand late-night snacks, and never ask what happened to the last bottle of wine.</div>
+    <div class="rating">★★★★★ <small>3,416 reviews</small></div>
+    <div class="meta"><span class="price">$185,000 / yr</span><span class="tag">Dishes Included</span></div>
+    <div class="review">“Dinner was exquisite. Kitchen was spotless. Pretended not to notice me eating tiramisu at 2:14 a.m. Five stars.”<span>— MidnightConnoisseur</span></div>
+    <div class="buttons">
+      <button class="primary" onclick="addCart(7,true)">Buy It For Me</button>
+      <button class="ghost" onclick="addCart(7,false)">Add to Wishlist</button>
+    </div>
+  </div>
+</article>
+<article class="card">
+  <div class="photo"><img src="./domination.jpg" alt="" loading="lazy"><span class="badge">BOARD APPROVAL REQUIRED</span></div>
+  <div class="body">
+    <div class="item">ITEM 09</div>
+    <h2>World Domination</h2>
+    <div class="desc">Tasteful domination only. Excellent infrastructure, competent administrators, beautiful architecture, and weekends entirely off.</div>
+    <div class="rating">★★★★☆ <small>7 historical attempts</small></div>
+    <div class="meta"><span class="price">Negotiable</span><span class="tag">Phase One</span></div>
+    <div class="review">“Excellent concept. Logistics are brutal. Recommend hiring better ministers and avoiding winter campaigns.”<span>— N. Bonaparte</span></div>
+    <div class="buttons">
+      <button class="primary" onclick="addCart(8,true)">Buy It For Me</button>
+      <button class="ghost" onclick="addCart(8,false)">Add to Wishlist</button>
+    </div>
+  </div>
+</article></main></div>
+<footer>For entertainment purposes only. No humans, dragons, castles, souls, sovereign nations, or functioning attention spans are actually being sold.</footer>
+<div class="overlay" id="ov" onclick="closeCart()"></div>
+<aside class="drawer" id="dr"><div class="dh"><h3>Your Cart</h3><button class="close" onclick="closeCart()">×</button></div><div class="cartlist" id="cart"></div><div class="cf"><div class="total"><span>Estimated Total</span><strong id="total">$0</strong></div><button class="primary checkout" onclick="checkout()">Proceed to Financial Ruin</button></div></aside>
+<div class="toast" id="toast"></div>
+<script>
+const P=[{name:'A Pair of 6\'4" Male Twins',price:'Priceless',value:9999999},{name:'One Million Dollars',price:'$1,000,000',value:1000000},{name:'A Tastefully Haunted Castle',price:'€14,750,000',value:14750000},{name:'One Black Dragon',price:'3 Kingdoms',value:30000000},{name:'A Private Island',price:'$38,000,000',value:38000000},{name:'One Functioning Attention Span',price:'Currently Unavailable',value:11},{name:'Immortality',price:'Your Soul*',value:666666},{name:'A Personal Chef',price:'$185,000 / yr',value:185000},{name:'World Domination',price:'Negotiable',value:99000000}]; let C=[];
+function addCart(i,b){let x=C.find(x=>x.i===i);x?x.q++:C.push({i,q:1});updateCart();say(b?"Added to your cart of questionable financial decisions.":"Added to the wishlist. Your standards remain admirably unreasonable.");if(b)openCart()}
+function updateCart(){count.textContent=C.reduce((a,x)=>a+x.q,0);if(!C.length){cart.innerHTML='<div class="empty">Your cart is tragically sensible.</div>';total.textContent="$0";return} cart.innerHTML=C.map((x,j)=>`<div class="ci"><div><b>${P[x.i].name}</b><br><small>${P[x.i].price} · Qty ${x.q}</small></div><button class="remove" onclick="removeItem(${j})">Remove</button></div>`).join(""); total.textContent="$"+C.reduce((a,x)=>a+P[x.i].value*x.q,0).toLocaleString()+" + 3 kingdoms"}
+function removeItem(j){C.splice(j,1);updateCart()} function openCart(){dr.classList.add("open");ov.classList.add("open")} function closeCart(){dr.classList.remove("open");ov.classList.remove("open")}
+function checkout(){let a=["Payment declined: your bank has questions.","Checkout paused while legal determines whether a kingdom is valid currency.","Congratulations. Your order has been forwarded to a shadowy benefactor.","Financing available: 4,700 easy monthly payments plus one firstborn heir.","The dragon ate the payment processor. Please try again later."];say(a[Math.floor(Math.random()*a.length)])}
+function say(m){toast.textContent=m;toast.classList.add("show");clearTimeout(window.t);window.t=setTimeout(()=>toast.classList.remove("show"),3000)} updateCart();
+</script></body></html>
